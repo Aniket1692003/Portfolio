@@ -225,8 +225,8 @@ class Scene {
 
     this.camera.updateProjectionMatrix();
   }
-
-  onDocumentMouseMove(){
+  // PROBLEM WITH THIS PART AND CHECK LINE 263
+  /*onDocumentMouseMove(){
     let mouseX = 0;
     let mouseY = 0;
 
@@ -238,7 +238,10 @@ class Scene {
 
     mouseX = (event.clientX - windowX);
     mouseY = (event.clientY - windowY);
-  }
+
+    targetX = mouseX * 0.001
+    targetY = mouseY * 0.001
+}*/
 
   animate() {
     requestAnimationFrame(this.animate.bind(this));
@@ -257,9 +260,10 @@ class Scene {
     this.mesh.rotation.x = 0.1 * this.clock.getElapsedTime();
     this.mesh.rotation.y = 0.1 * this.clock.getElapsedTime();
 
-    // this.mesh.rotation.x += 0.5 * (this.targetX - this.mesh.rotation.y);
-    // this.mesh.rotation.y += 0.5 * (this.targetY - this.mesh.rotation.x);
-    // this.mesh.rotation.z += 0.5 * (this.targetY - this.mesh.rotation.X);
+    // PROBLEM WITH THIS PART
+    /* this.mesh.rotation.x += 0.5 * (this.targetX - this.mesh.rotation.y);
+     this.mesh.rotation.y += 0.5 * (this.targetY - this.mesh.rotation.x);
+     this.mesh.rotation.z += 0.5 * (this.targetY - this.mesh.rotation.X); */
 
     this.renderer.render(this.scene, this.camera);
   }  
