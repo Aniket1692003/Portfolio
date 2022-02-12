@@ -10,9 +10,9 @@ const settings = {
   density: 1.5,
   strength: 0.2,
 };
-// gui.add(settings, 'speed', 0.1, 1, 0.01);
-// gui.add(settings, 'density', 0, 10, 0.01);
-// gui.add(settings, 'strength', 0, 2, 0.01);
+//  gui.add(settings, 'speed', 0.1, 1, 0.01);
+//  gui.add(settings, 'density', 0, 10, 0.01);
+//  gui.add(settings, 'strength', 0, 2, 0.01);
 
 const noise = `
   // GLSL textureless classic 3D noise "cnoise",
@@ -164,7 +164,7 @@ class Scene {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor('black', 0);
+    this.renderer.setClearColor('black', 1);
     
     this.camera = new THREE.PerspectiveCamera(
       45,
@@ -197,6 +197,7 @@ class Scene {
   }  
   
   addElements() {
+    //abstract sphere
     const geometry = new THREE.IcosahedronBufferGeometry(1, 64);
     const material = new THREE.ShaderMaterial({
       vertexShader,
@@ -210,7 +211,29 @@ class Scene {
       wireframe: true,
     });
     this.mesh = new THREE.Mesh(geometry, material);
-    this.scene.add(this.mesh);
+
+    //particle system
+    const vertices = [];
+    
+    for(let i = 0; i < 50; i++){
+      const x = THREE.MathUtils.randFloatSpread( 2000 );
+      const y = THREE.MathUtils.randFloatSpread( 2000 );
+      const z = THREE.MathUtils.randFloatSpread( 2000 );
+
+      vertices.push(x, y ,z);
+    }
+
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute('position', new THREE.Float32BufferAttribute( vertices, 3 ));
+    
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.005
+    });
+    
+    this.particleMesh = new THREE.Mesh(particleGeo, particleMat);
+    
+    //add meshes to scene here
+    this.scene.add(this.particleMesh, this.mesh)
   }
   
   addEvents() {
@@ -263,7 +286,7 @@ onDocumentMouseMove(){
 
     this.mesh.rotation.x = 0.5 * this.clock.getElapsedTime();
     this.mesh.rotation.y = 0.5 * this.clock.getElapsedTime();
-    console.log(this.clock.getElapsedTime());
+    //console.log(this.clock.getElapsedTime());
 
     // PROBLEM WITH THIS PART
     this.mesh.rotation.x = 0.5 * (targetY - this.mesh.rotation.x);
