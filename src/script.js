@@ -215,10 +215,11 @@ class Scene {
     //particle system
     const vertices = [];
     
-    for(let i = 0; i < 50; i++){
-      const x = THREE.MathUtils.randFloatSpread( 2000 );
-      const y = THREE.MathUtils.randFloatSpread( 2000 );
-      const z = THREE.MathUtils.randFloatSpread( 2000 );
+    for(let i = 0; i < 100; i++){
+
+      let x = Math.random();
+      let y = Math.random();
+      let z = Math.random();
 
       vertices.push(x, y ,z);
     }
@@ -252,7 +253,7 @@ class Scene {
     this.camera.updateProjectionMatrix();
   }
   // PROBLEM WITH THIS PART AND CHECK LINE 263
-onDocumentMouseMove(){
+  onDocumentMouseMove(){
     let mouseX = 0;
     let mouseY = 0;
 
