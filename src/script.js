@@ -10,9 +10,9 @@ const settings = {
   density: 1.5,
   strength: 0.2,
 };
-gui.add(settings, 'speed', 0.1, 1, 0.01);
-gui.add(settings, 'density', 0, 10, 0.01);
-gui.add(settings, 'strength', 0, 2, 0.01);
+// gui.add(settings, 'speed', 0.1, 1, 0.01);
+// gui.add(settings, 'density', 0, 10, 0.01);
+// gui.add(settings, 'strength', 0, 2, 0.01);
 
 const noise = `
   // GLSL textureless classic 3D noise "cnoise",
@@ -156,13 +156,15 @@ const fragmentShader = `
     gl_FragColor = vec4(vNormal, 1.0);
   }  
 `;
-
+    let targetX = 0;
+    let targetY = 0;
 class Scene {
   constructor() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor('black', 1);
+    this.renderer.setClearColor('black', 0);
     
     this.camera = new THREE.PerspectiveCamera(
       45,
@@ -185,6 +187,7 @@ class Scene {
     this.addCanvas();
     this.addElements();
     this.addEvents();
+   
   } 
   
   addCanvas() {
@@ -226,12 +229,11 @@ class Scene {
     this.camera.updateProjectionMatrix();
   }
   // PROBLEM WITH THIS PART AND CHECK LINE 263
-  /*onDocumentMouseMove(){
+onDocumentMouseMove(){
     let mouseX = 0;
     let mouseY = 0;
 
-    let targetX = 0
-    let targetY = 0
+    
 
     const windowX = window.innerWidth / 2;
     const windowY = window.innerHeight / 2;
@@ -241,7 +243,9 @@ class Scene {
 
     targetX = mouseX * 0.001
     targetY = mouseY * 0.001
-}*/
+
+    
+}
 
   animate() {
     requestAnimationFrame(this.animate.bind(this));
@@ -257,15 +261,17 @@ class Scene {
     this.mesh.material.uniforms.uNoiseDensity.value = settings.density;
     this.mesh.material.uniforms.uNoiseStrength.value = settings.strength;
 
-    this.mesh.rotation.x = 0.1 * this.clock.getElapsedTime();
-    this.mesh.rotation.y = 0.1 * this.clock.getElapsedTime();
+    this.mesh.rotation.x = 0.5 * this.clock.getElapsedTime();
+    this.mesh.rotation.y = 0.5 * this.clock.getElapsedTime();
+    console.log(this.clock.getElapsedTime());
 
     // PROBLEM WITH THIS PART
-    /* this.mesh.rotation.x += 0.5 * (this.targetX - this.mesh.rotation.y);
-     this.mesh.rotation.y += 0.5 * (this.targetY - this.mesh.rotation.x);
-     this.mesh.rotation.z += 0.5 * (this.targetY - this.mesh.rotation.X); */
-
+    this.mesh.rotation.x = 0.5 * (targetY - this.mesh.rotation.x);
+     this.mesh.rotation.y = 0.5 * (targetX - this.mesh.rotation.y);
+     this.mesh.rotation.z = 0.5 * (targetY - this.mesh.rotation.x);
+     
     this.renderer.render(this.scene, this.camera);
+    //console.log(targetX, targetY);
   }  
 }
 

@@ -13,6 +13,7 @@ body
 
 .webgl
 {
+    height: 100vh;
     position: absolute;
     top: 0;
     left: 0;
@@ -32,4 +33,9 @@ h1
     text-transform: uppercase;
     color: white;
     z-index: 1;
+}
+
+section
+{
+    height: 100vh;
 }
