@@ -3,7 +3,7 @@ import * as THREE from 'three'
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 
-const gui = new dat.GUI();
+//const gui = new dat.GUI();
 
 const settings = {
   speed: 0.2,
@@ -164,7 +164,7 @@ class Scene {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor('black', 1);
+    this.renderer.setClearColor('black', 0);
     
     this.camera = new THREE.PerspectiveCamera(
       45,
@@ -215,11 +215,11 @@ class Scene {
     //particle system
     const vertices = [];
     
-    for(let i = 0; i < 100; i++){
+    for(let i = 0; i < 7000; i++){
 
-      let x = Math.random();
-      let y = Math.random();
-      let z = Math.random();
+      let x = (Math.random() - 0.5) * 5;
+      let y = (Math.random() - 0.5) * 5;
+      let z = (Math.random() - 0.5) * 5;
 
       vertices.push(x, y ,z);
     }
@@ -228,10 +228,10 @@ class Scene {
     particleGeo.setAttribute('position', new THREE.Float32BufferAttribute( vertices, 3 ));
     
     const particleMat = new THREE.PointsMaterial({
-      size: 0.005
+      size: 0.007
     });
     
-    this.particleMesh = new THREE.Mesh(particleGeo, particleMat);
+    this.particleMesh = new THREE.Points(particleGeo, particleMat);
     
     //add meshes to scene here
     this.scene.add(this.particleMesh, this.mesh)
@@ -287,12 +287,17 @@ class Scene {
 
     this.mesh.rotation.x = 0.5 * this.clock.getElapsedTime();
     this.mesh.rotation.y = 0.5 * this.clock.getElapsedTime();
+    this.particleMesh.rotation.x = 0.5 * this.clock.getElapsedTime();
+    this.particleMesh.rotation.y = 0.5 * this.clock.getElapsedTime();
     //console.log(this.clock.getElapsedTime());
 
     // PROBLEM WITH THIS PART
     this.mesh.rotation.x = 0.5 * (targetY - this.mesh.rotation.x);
-     this.mesh.rotation.y = 0.5 * (targetX - this.mesh.rotation.y);
-     this.mesh.rotation.z = 0.5 * (targetY - this.mesh.rotation.x);
+    this.mesh.rotation.y = 0.5 * (targetX - this.mesh.rotation.y);
+    this.mesh.rotation.z = 0.5 * (targetY - this.mesh.rotation.x);
+    this.particleMesh.rotation.x = 0.5 * (targetX - this.mesh.rotation.y);
+    this.particleMesh.rotation.y = 0.5 * (targetY - this.mesh.rotation.x);
+    this.particleMesh.rotation.z = 0.5 * (targetX - this.mesh.rotation.y);
      
     this.renderer.render(this.scene, this.camera);
     //console.log(targetX, targetY);
