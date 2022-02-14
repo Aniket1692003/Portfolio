@@ -208,7 +208,7 @@ class Scene {
         uNoiseDensity: { value: settings.density },
         uNoiseStrength: { value: settings.strength },
       },
-      wireframe: true,
+      wireframe: false,
     });
     this.mesh = new THREE.Mesh(geometry, material);
 
