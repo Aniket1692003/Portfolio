@@ -164,7 +164,7 @@ class Scene {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor('black', 0);
+    //this.renderer.setClearColor('black', 0);
     
     this.camera = new THREE.PerspectiveCamera(
       45,
@@ -289,6 +289,7 @@ class Scene {
     this.mesh.rotation.y = 0.5 * this.clock.getElapsedTime();
     this.particleMesh.rotation.x = 0.5 * this.clock.getElapsedTime();
     this.particleMesh.rotation.y = 0.5 * this.clock.getElapsedTime();
+
     //console.log(this.clock.getElapsedTime());
 
     // PROBLEM WITH THIS PART

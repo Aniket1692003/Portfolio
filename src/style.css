@@ -4,12 +4,15 @@
     padding: 0;
 }
 
-html,
+html
+{
+    background: linear-gradient(to bottom right,  #ffc3f3 0%, #f6afff 25%, #d0a4ff 50%, #c6b5ff 75%, #c3c7ff 100%); 
+}
 body
 {
-    height: 100vh;
+    height: 200vh;
+    overflow-x: hidden;
     font-family: 'Poppins';
-    background-color: black;
 }
 
 .webgl
@@ -34,9 +37,4 @@ h1
     text-transform: uppercase;
     color: white;
     z-index: 1;
-}
-
-section
-{
-    height: 100vh;
 }
