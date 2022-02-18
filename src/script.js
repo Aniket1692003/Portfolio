@@ -7,7 +7,7 @@ import * as dat from 'dat.gui'
 
 const settings = {
   speed: 0.07,
-  density: 5,
+  density: 2,
   strength: 0.5,
   frequency: 2.0,
   amplitude: 7.0, 
