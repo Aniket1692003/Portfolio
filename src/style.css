@@ -6,11 +6,11 @@
 
 html
 {
-    background: linear-gradient(to bottom right,  #ffc3f3 0%, #f6afff 25%, #d0a4ff 50%, #c6b5ff 75%, #c3c7ff 100%); 
+    background: linear-gradient(to bottom right,  #000000 0%, #1d0120 25%, #190b29 50%, #06001a 75%, #111229 100%); 
 }
 body
 {
-    height: 200vh;
+    height: 100vh;
     overflow-x: hidden;
     font-family: 'Poppins';
 }
