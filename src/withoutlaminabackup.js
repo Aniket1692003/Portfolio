@@ -3,7 +3,7 @@ import * as THREE from 'three'
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/dist/vanilla'
-
+import { Vector3 } from 'three'
 
 //const gui = new dat.GUI();
 let canvas_width = window.innerWidth;
@@ -181,9 +181,8 @@ const fragmentShader = `
   uniform float uTime;
   
   void main() {
-    vec3 color = vec3(1.0);
-    
-    gl_FragColor = vec4(vNormal, 1.0);
+
+    gl_FragColor = vec4(1, 1, 1, 1.0);
   }  
 `;
     let targetX = 0;
@@ -228,31 +227,9 @@ class Scene {
   
   addElements() {
     //abstract sphere
-
-    // const laminaGeo = new THREE.SphereGeometry(1, 128, 64)
-    // const laminaMat = new LayerMaterial({
-    //   layers: [
-    //     new Base({
-    //       color: '#d9d9d9',
-    //       alpha: 1,
-    //       mode: 'normal',
-    //     }),
-    //     new Depth({
-    //       colorA: '#002f4b',
-    //       colorB: '#f2fdff',
-    //       alpha: 1,
-    //       mode: 'multiply',
-    //       near: 0,
-    //       far: 2,
-    //       origin: new THREE.Vector3(1, 1, 1),
-    //     }),
-    //   ],
-    // })
-
-    //const lamimaMesh = new THREE.Mesh(laminaGeo, laminaMat)
     
     const geometry = new THREE.IcosahedronBufferGeometry(1, 64);
-    const material = new THREE.ShaderMaterial({
+    const material = new LayerMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
@@ -264,6 +241,37 @@ class Scene {
         uAmplitude: { value: settings.amplitude },
       },
       wireframe: false,
+      layers: [
+          new Base({
+            color: '#d9d9d9',
+            alpha: 1,
+            mode: 'normal',
+          }),
+          new Depth({
+            colorA: '#002f4b',
+            colorB: '#f2fdff',
+            alpha: 1,
+            mode: 'multiply',
+            near: 0,
+            far: 2,
+            origin: new Vector3(1, 1, 1),
+          }),
+          new Fresnel({
+            color: '#bffbff',
+            alpha: 1,
+            mode: 'softlight',
+            power: 2,
+            intensity: 1,
+            bias: 0.1,
+          }),
+          new Noise({
+            colorA: '#a3a3a3',
+            alpha: 0.1,
+            mode: 'normal',
+            scale: 1,
+          }),
+            ]
+      
     });
     this.mesh = new THREE.Mesh(geometry, material);
 
@@ -320,7 +328,7 @@ class Scene {
 
     this.camera.updateProjectionMatrix();
   }
-  // PROBLEM WITH THIS PART AND CHECK LINE 263
+  
   onDocumentMouseMove(){
     let mouseX = 0;
     let mouseY = 0;
@@ -363,7 +371,6 @@ class Scene {
 
     //console.log(this.clock.getElapsedTime());
 
-    // PROBLEM WITH THIS PART
     this.mesh.rotation.x = 0.5 * (targetY - this.mesh.rotation.x);
     this.mesh.rotation.y = 0.5 * (targetX - this.mesh.rotation.y);
     this.mesh.rotation.z = 0.5 * (targetY - this.mesh.rotation.x);

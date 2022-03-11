@@ -2,9 +2,12 @@ import './style.css'
 import * as THREE from 'three'
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
+import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/dist/vanilla'
+
 
 //const gui = new dat.GUI();
-
+let canvas_width = window.innerWidth;
+let canvas_height = window.innerHeight * 3;
 const settings = {
   speed: 0.07,
   density: 2,
@@ -190,16 +193,16 @@ class Scene {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(window.innerWidth, canvas_height);
     //this.renderer.setClearColor('black', 0);
     
     this.camera = new THREE.PerspectiveCamera(
       45,
-      window.innerWidth / window.innerHeight,
+      window.innerWidth / canvas_height,
       0.1,
       1000
     );
-    this.camera.position.set(0, 0, 4);    
+    this.camera.position.set(0, 0, 10);    
     
     this.scene = new THREE.Scene();
     
@@ -225,6 +228,29 @@ class Scene {
   
   addElements() {
     //abstract sphere
+
+    // const laminaGeo = new THREE.SphereGeometry(1, 128, 64)
+    // const laminaMat = new LayerMaterial({
+    //   layers: [
+    //     new Base({
+    //       color: '#d9d9d9',
+    //       alpha: 1,
+    //       mode: 'normal',
+    //     }),
+    //     new Depth({
+    //       colorA: '#002f4b',
+    //       colorB: '#f2fdff',
+    //       alpha: 1,
+    //       mode: 'multiply',
+    //       near: 0,
+    //       far: 2,
+    //       origin: new THREE.Vector3(1, 1, 1),
+    //     }),
+    //   ],
+    // })
+
+    //const lamimaMesh = new THREE.Mesh(laminaGeo, laminaMat)
+    
     const geometry = new THREE.IcosahedronBufferGeometry(1, 64);
     const material = new THREE.ShaderMaterial({
       vertexShader,
@@ -244,11 +270,11 @@ class Scene {
     //particle system
     const vertices = [];
     
-    for(let i = 0; i < 7000; i++){
+    for(let i = 0; i < 20000; i++){
 
-      let x = (Math.random() - 0.5) * 5;
-      let y = (Math.random() - 0.5) * 5;
-      let z = (Math.random() - 0.5) * 5;
+      let x = (Math.random() - 0.5) * 10;
+      let y = (Math.random() - 0.5) * 10;
+      let z = (Math.random() - 0.5) * 10;
 
       vertices.push(x, y ,z);
     }
@@ -287,7 +313,7 @@ class Scene {
   
   resize() {
     let width = window.innerWidth;
-    let height = window.innerHeight;
+    let height = canvas_height;
 
     this.camera.aspect = width / height;
     this.renderer.setSize(width, height);
@@ -302,7 +328,7 @@ class Scene {
     
 
     const windowX = window.innerWidth / 2;
-    const windowY = window.innerHeight / 2;
+    const windowY = canvas_height / 2;
 
     mouseX = (event.clientX - windowX);
     mouseY = (event.clientY - windowY);

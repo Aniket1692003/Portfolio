@@ -6,8 +6,9 @@ import { LayerMaterial, Base, Depth, Fresnel, Noise, Displace } from 'lamina/van
 import { Vector3 } from 'three'
 
 //const gui = new dat.GUI();
-let canvas_width = window.innerWidth;
-let canvas_height = window.innerHeight * 3;
+  //gui.add(settings, 'speed', 0.1, 1, 0.01);
+  //gui.add(settings, 'density', 0, 10, 0.01);
+  //gui.add(settings, 'strength', 0, 2, 0.01);
 
     let targetX = 0;
     let targetY = 0;
@@ -16,16 +17,16 @@ class Scene {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true});
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    this.renderer.setSize(window.innerWidth, canvas_height);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     //this.renderer.setClearColor('black', 0);
     
     this.camera = new THREE.PerspectiveCamera(
       45,
-      window.innerWidth / canvas_height,
+      window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    this.camera.position.set(0, 0, 10);    
+    this.camera.position.set(0, 0, 4);    
     
     this.scene = new THREE.Scene();
     
@@ -51,38 +52,32 @@ class Scene {
   
   addElements() {
     //abstract sphere
-
-    //abs sphere geometry
     const geometry = new THREE.IcosahedronBufferGeometry(1, 64);
-    
-    //abs sphere layers
     
     const displaceLayer = new Displace({
       type: 'perlin',
     });
-
-
     
-    //abs sphere material
     const mat = new LayerMaterial({
-      color: "white",
-      lighting: "phong",
+      
       layers: [
         
         displaceLayer,
+      
       ]
+
     })
 
     this.mesh = new THREE.Mesh(geometry, mat)
-
+    
     //particle system
     const vertices = [];
     
-    for(let i = 0; i < 20000; i++){
+    for(let i = 0; i < 7000; i++){
 
-      let x = (Math.random() - 0.5) * 10;
-      let y = (Math.random() - 0.5) * 10;
-      let z = (Math.random() - 0.5) * 10;
+      let x = (Math.random() - 0.5) * 5;
+      let y = (Math.random() - 0.5) * 5;
+      let z = (Math.random() - 0.5) * 5;
 
       vertices.push(x, y ,z);
     }
@@ -110,12 +105,7 @@ class Scene {
     // }
     
     //add meshes to scene here
-
-    //lights
-
-    const ambLight = new THREE.AmbientLight('#FFFFFF', 1);
-    
-    this.scene.add(this.particleMesh, this.mesh, ambLight)
+    this.scene.add(this.particleMesh, this.mesh)
   }
   
   addEvents() {
@@ -126,14 +116,14 @@ class Scene {
   
   resize() {
     let width = window.innerWidth;
-    let height = canvas_height;
+    let height = window.innerHeight;
 
     this.camera.aspect = width / height;
     this.renderer.setSize(width, height);
 
     this.camera.updateProjectionMatrix();
   }
-  
+  // PROBLEM WITH THIS PART AND CHECK LINE 263
   onDocumentMouseMove(){
     let mouseX = 0;
     let mouseY = 0;
@@ -141,7 +131,7 @@ class Scene {
     
 
     const windowX = window.innerWidth / 2;
-    const windowY = canvas_height / 2;
+    const windowY = window.innerHeight / 2;
 
     mouseX = (event.clientX - windowX);
     mouseY = (event.clientY - windowY);
@@ -160,6 +150,7 @@ class Scene {
   render() {
     //this.controls.update();
 
+    // Update uniforms
     this.mesh.rotation.x = 0.5 * this.clock.getElapsedTime();
     this.mesh.rotation.y = 0.5 * this.clock.getElapsedTime();
     this.particleMesh.rotation.x = 0.2 * this.clock.getElapsedTime();
@@ -167,6 +158,7 @@ class Scene {
 
     //console.log(this.clock.getElapsedTime());
 
+    // PROBLEM WITH THIS PART
     this.mesh.rotation.x = 0.5 * (targetY - this.mesh.rotation.x);
     this.mesh.rotation.y = 0.5 * (targetX - this.mesh.rotation.y);
     this.mesh.rotation.z = 0.5 * (targetY - this.mesh.rotation.x);
