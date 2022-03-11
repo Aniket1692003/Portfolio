@@ -182,7 +182,7 @@ const fragmentShader = `
   
   void main() {
 
-    gl_FragColor = vec4(1,1, 1, 1.0);
+    gl_FragColor = vec4(1, 1, 1, 1.0);
   }  
 `;
     let targetX = 0;
@@ -227,28 +227,6 @@ class Scene {
   
   addElements() {
     //abstract sphere
-
-    // const laminaGeo = new THREE.SphereGeometry(1, 128, 64)
-    // const laminaMat = new LayerMaterial({
-    //   layers: [
-    //     new Base({
-    //       color: '#ffbcd9',
-    //       alpha: 1,
-    //       mode: 'add',
-    //     }),
-    //     new Depth({
-    //       colorA: '#ff3399',
-    //       colorB: '#72c8fb',
-    //       alpha: 1,
-    //       mode: 'add',
-    //       near: 0,
-    //       far: 2,
-    //       origin: new THREE.Vector3(1, 1, 1),
-    //     }),
-    //   ],
-    // })
-
-    //const laminaMesh = new THREE.Mesh(laminaGeo, laminaMat)
     
     const geometry = new THREE.IcosahedronBufferGeometry(1, 64);
     const material = new LayerMaterial({
@@ -350,7 +328,7 @@ class Scene {
 
     this.camera.updateProjectionMatrix();
   }
-  // PROBLEM WITH THIS PART AND CHECK LINE 263
+  
   onDocumentMouseMove(){
     let mouseX = 0;
     let mouseY = 0;
