@@ -3,7 +3,7 @@ import * as THREE from 'three'
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/dist/vanilla'
-import { Vector3 } from 'three'
+
 
 //const gui = new dat.GUI();
 let canvas_width = window.innerWidth;
@@ -181,8 +181,9 @@ const fragmentShader = `
   uniform float uTime;
   
   void main() {
-
-    gl_FragColor = vec4(1,1, 1, 1.0);
+    vec3 color = vec3(1.0);
+    
+    gl_FragColor = vec4(vNormal, 1.0);
   }  
 `;
     let targetX = 0;
@@ -232,15 +233,15 @@ class Scene {
     // const laminaMat = new LayerMaterial({
     //   layers: [
     //     new Base({
-    //       color: '#ffbcd9',
+    //       color: '#d9d9d9',
     //       alpha: 1,
-    //       mode: 'add',
+    //       mode: 'normal',
     //     }),
     //     new Depth({
-    //       colorA: '#ff3399',
-    //       colorB: '#72c8fb',
+    //       colorA: '#002f4b',
+    //       colorB: '#f2fdff',
     //       alpha: 1,
-    //       mode: 'add',
+    //       mode: 'multiply',
     //       near: 0,
     //       far: 2,
     //       origin: new THREE.Vector3(1, 1, 1),
@@ -248,10 +249,10 @@ class Scene {
     //   ],
     // })
 
-    //const laminaMesh = new THREE.Mesh(laminaGeo, laminaMat)
+    //const lamimaMesh = new THREE.Mesh(laminaGeo, laminaMat)
     
     const geometry = new THREE.IcosahedronBufferGeometry(1, 64);
-    const material = new LayerMaterial({
+    const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
@@ -263,37 +264,6 @@ class Scene {
         uAmplitude: { value: settings.amplitude },
       },
       wireframe: false,
-      layers: [
-          new Base({
-            color: '#d9d9d9',
-            alpha: 1,
-            mode: 'normal',
-          }),
-          new Depth({
-            colorA: '#002f4b',
-            colorB: '#f2fdff',
-            alpha: 1,
-            mode: 'multiply',
-            near: 0,
-            far: 2,
-            origin: new Vector3(1, 1, 1),
-          }),
-          new Fresnel({
-            color: '#bffbff',
-            alpha: 1,
-            mode: 'softlight',
-            power: 2,
-            intensity: 1,
-            bias: 0.1,
-          }),
-          new Noise({
-            colorA: '#a3a3a3',
-            alpha: 0.1,
-            mode: 'normal',
-            scale: 1,
-          }),
-            ]
-      
     });
     this.mesh = new THREE.Mesh(geometry, material);
 
